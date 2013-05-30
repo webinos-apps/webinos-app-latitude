@@ -1,0 +1,95 @@
+@font-face {
+    font-family: 'OpenSansRegular';
+    src: url('../fonts/OpenSans-Regular-webfont.eot');
+    src: url('../fonts/OpenSans-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/OpenSans-Regular-webfont.woff') format('woff'),
+                                                         url('../fonts/OpenSans-Regular-webfont.ttf') format('truetype'),
+                                                         url('../fonts/OpenSans-Regular-webfont.svg#OpenSansRegular') format('svg');
+                                                         font-weight: normal;
+                                                         font-style: normal;
+}
+@font-face {
+    font-family: 'OpenSansLight';
+    src: url('../fonts/OpenSans-Light-webfont.eot');
+    src: url('../fonts/OpenSans-Light-webfont.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/OpenSans-Light-webfont.woff') format('woff'),
+                                                           url('../fonts/OpenSans-Light-webfont.ttf') format('truetype'),
+            url('../fonts/OpenSans-Light-webfont.svg#OpenSansLight') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+#wrapper { 
+    width: 100%; 
+/*     background-color: red;  */
+/*     overflow:auto; */
+/*     border: 2px solid blue;     */
+}
+#content { 
+    width: 40%; 
+    float: left; 
+    margin: 50px;
+/*     border: 2px solid green;     */
+}
+#debug { 
+    width: 40%; 
+    float: right; 
+    background-color: #30D5C8; 
+    color: black;
+    font-family: 'OpenSansRegular', sans-serif;
+    border: 2px solid black;    
+    margin: 50px;
+}  
+#map { 
+    width: 100%; 
+    clear:both; 
+    height: 600px; 
+    position: relative; 
+    top:100; 
+    overflow: hidden;    
+} 
+
+body {
+    font-family: 'OpenSansRegular', sans-serif;
+    font-weight: 300;
+    font-size: 1em;
+    margin: 0;
+    overflow: auto;
+    background: #F90;
+}
+
+h1 {
+    font-family: 'OpenSansLight';
+    font-size: 450%;
+    font-weight: normal;
+    margin: 0;
+}
+
+h2 {
+    font-family: 'OpenSansLight';
+    font-size: 150%;
+    font-weight: normal;
+    margin: 0;
+}
+
+button {
+    background: #403;
+    border: 1px outset blue;
+    color: white;
+    padding: 0.5em;
+    font-size: 100%;
+    cursor: pointer;
+    border-radius: 5px;
+}
+button:hover {
+    background: #B7A;
+    border: 1px solid #403;
+}
+
+select, option, input {
+    background: #403;
+    border: 1px solid #B7A;
+    color: white;
+    font-size: 80%;
+}

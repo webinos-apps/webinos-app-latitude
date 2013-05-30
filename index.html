@@ -1,0 +1,58 @@
+<!--/*******************************************************************************
+ *  Code contributed to the webinos project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Copyright 2013 Istituto Superiore Mario Boella (IT)
+ * Author: Paolo Vergori (ISMB), Michele Morello (ISMB)
+ ******************************************************************************/-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript" src="./js/jquery-1.8.2.min.js" ></script>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true&language=en"></script>
+    <script type="text/javascript" src="/webinos.js"></script>
+    <script type="text/javascript" src="./js/latitude.js"></script>
+    <link rel="stylesheet" type="text/css" href="./css/latitude.css" />
+  <body>
+    <p><div id="wrapper">
+        <div id="content" align="center">
+            <h1>Webinos Latitude</h1>
+            <div style="background-color:lightgray; width:80%; height=500px;">
+                <div style="width: 48%; float: left;">
+                    <p><h2>connected friends :</h2></p>
+                    <select id="pzhList" size="3" style="width:100%;" onchange="findGeolocation();"> <option> </option> </select><br>
+                </div>
+                <div style="width: 48%; float: right;">
+                    <p><h2>friend's devices :</h2></p>
+                    <select id="pzpList" size="3" style="width:100%;" onchange="bindservice();"> <option> </option> </select><br>
+                </div>
+            </div>
+
+            <div style="bwidth:100%; clear:both;" align="center">
+                <button id="btnFindGeolocation" >Refresh friends list</button>
+                <button id="btnFindSingleLocation" >Locate single device</button>
+                <button id="btnFindAll" >Locate all friends</button>
+                <button id="btnFindZone" >Locate selected zone</button>
+                <button id="btnFindMyLocation" >Find my location</button>
+            </div>
+
+            <p><div id="map"></div><p> 
+        </div>    
+
+        <div id="debug" style="overflow-y:auto;"> debug info </div>
+    </div></p>
+  </body>
+</html>
+
