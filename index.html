@@ -25,34 +25,36 @@
     <script type="text/javascript" src="/webinos.js"></script>
     <script type="text/javascript" src="./js/latitude.js"></script>
     <link rel="stylesheet" type="text/css" href="./css/latitude.css" />
+    <meta name="viewport" content="width=device-width, user-scalable=no">
   <body>
-    <p><div id="wrapper">
-        <div id="content" align="center">
-            <h1>Webinos Latitude</h1>
-            <div style="background-color:lightgray; width:80%; height=500px;">
-                <div style="width: 48%; float: left;">
-                    <p><h2>connected friends :</h2></p>
-                    <select id="pzhList" size="3" style="width:100%;" onchange="findGeolocation();"> <option> </option> </select><br>
-                </div>
-                <div style="width: 48%; float: right;">
-                    <p><h2>friend's devices :</h2></p>
-                    <select id="pzpList" size="3" style="width:100%;" onchange="bindservice();"> <option> </option> </select><br>
-                </div>
-            </div>
+	<div id="content" align="center">
+		<h1>Webinos Latitude</h1>
+		<div class="friends">
+			<div>
+				<h2>connected friends :</h2>
+				<select id="pzhList" size="3" style="width:100%;" onchange="findGeolocation();"> <option> </option> </select><br>
+			</div>
+			<div>
+				<h2>friend's devices :</h2>
+				<select id="pzpList" size="3" style="width:100%;" onchange="bindservice();"> <option> </option> </select><br>
+			</div>
+		</div>
 
-            <div style="bwidth:100%; clear:both;" align="center">
-                <button id="btnFindGeolocation" >Refresh friends list</button>
-                <button id="btnFindSingleLocation" >Locate single device</button>
-                <button id="btnFindAll" >Locate all friends</button>
-                <button id="btnFindZone" >Locate selected zone</button>
-                <button id="btnFindMyLocation" >Find my location</button>
-            </div>
+		<div class="controls">
+			<button id="btnFindGeolocation" >Refresh friends list</button>
+			<button id="btnFindSingleLocation" >Locate single device</button>
+			<button id="btnFindAll" >Locate all friends</button>
+			<button id="btnFindZone" >Locate selected zone</button>
+			<button id="btnFindMyLocation" >Find my location</button>
+		</div>
 
-            <p><div id="map"></div><p> 
-        </div>    
+		<h2 id="debug-title">Debug info:</h2>
+		<div id="debug">
 
-        <div id="debug" style="overflow-y:auto;"> debug info </div>
-    </div></p>
+		</div>
+	</div>
+
+	<div id="map"></div>
   </body>
 </html>
 
