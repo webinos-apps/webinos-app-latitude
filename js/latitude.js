@@ -25,43 +25,47 @@ geoServices.currentIndex = 0;
 geoServices.watchId = null;
 
 
-function findGeolocation() {
+function findPZHs() {
+    //logWebinos();
+    $('#pzhList').empty();
+    $('#pzpList').empty();
+    for(var i=0;i<webinos.session.getConnectedDevices().length;i++)
+        $('#pzhList').append($('<option id="' + webinos.session.getConnectedDevices()[i].id + '">' + webinos.session.getConnectedDevices()[i].id.replace(/[^_]*_/gi, '').replace(/\/[A-Za-z0-9]*$/gi, '') + '</option>'));       
+    $('#pzhList').append($('<option id="' + webinos.session.getPZHId() + '">' + webinos.session.getPZPId().replace(/[^_]*_/gi, '').replace(/\/[A-Za-z0-9]*$/gi, '') + '</option>'));
+}
+
+
+function findGeolocationServices() {
     $('#pzpList').empty();
     geoServices.serviceArray = [];
+    geoServices.service = 0;
     webinos.discovery.findServices(new ServiceType('http://www.w3.org/ns/api-perms/geolocation'), {
-        onFound: onServiceFound
+        onFound: function (service){
+             if(service.serviceAddress.lastIndexOf($('#pzhList')[0].selectedOptions[0].id)!=-1){
+                geoServices.serviceArray[service.serviceAddress]=service;
+                $('#pzpList').append($('<option id="' + service.serviceAddress +'">' + service.serviceAddress.replace(/[^]*\//gi, '') + '</option>'));    
+             }
+        }
     });
 }
 
-function findPZHs() {
-    $('#pzhList').empty();
-    for(var i=0;i<webinos.session.getConnectedDevices().length;i++)
-        $('#pzhList').append($('<option>' + webinos.session.getConnectedDevices()[i].id + '</option>'));
-}
 
-function onServiceFound(service){ //TODO: this will never work with 2 pzp with same name connected to 2 different zones
-    for(var i=0;i<webinos.session.getConnectedDevices().length;i++){
-        if(webinos.session.getConnectedDevices()[i].id==$('#pzhList')[0].selectedOptions[0].label){ //check if the item id in the array is equal to the selected pzh
-            if(webinos.session.getConnectedDevices()[i].pzp.lastIndexOf(service.serviceAddress)!==-1){ //check if serviceAddress is in the pzp list of the searched pzh
-                $('#pzpList').append($('<option>' + webinos.session.getConnectedDevices()[i].pzp[0] + '</option>'));
-                geoServices.serviceArray[service.serviceAddress] = service;
-                debugLog('<li>' + service.displayName + " service found @" + service.serviceAddress +'</li>');
+function bindService() {
+//     console.log("***********");
+//     console.log($('#pzpList option:selected')[0].id);
+//     console.log(geoServices.serviceArray[$('#pzpList option:selected')[0].id]);
+//     console.log(geoServices.serviceArray);   
+//     console.log("***********");
+    try{
+        geoServices.service = geoServices.serviceArray[$('#pzpList option:selected')[0].id];
+        geoServices.service.bindService({
+            onBind: function (service){
+                debugLog('<li>' + "Bound to " + service.serviceAddress + ", service: " + service.api + '</li>');
             }
-        }
-    }
+       });
+    }catch(e){console.log(e);}
 }
 
-
-function bindservice() {
-    geoServices.service = geoServices.serviceArray[$('#pzpList option:selected').val()];
-    geoServices.service.bindService({
-        onBind: onBinding
-   });
-}
-
-function onBinding(service){
-    debugLog('<li>' + "Bound to " + service.serviceAddress + ", service: " + service.api + '</li>');
-}
 
 function drawEmptyMap(zoom){
     var location = new google.maps.LatLng(52.00, 13.00);
@@ -97,7 +101,7 @@ function findPositionOf(service){
     geoServices.service = service;
     geoServices.service.bindService({
         onBind: function(service){
-            onBinding(service);
+            debugLog('<li>' + "Bound to " + service.serviceAddress + ", service: " + service.api + '</li>');
             var PositionOptions = {};
             PositionOptions.enableHighAccuracy = true;
             PositionOptions.maximumAge = 5000;
@@ -113,7 +117,11 @@ function findPositionOf(service){
 }
 
 
-function findSingleLocation() {
+function findSingleLocation() {  
+    if($('#pzpList option:selected')[0] === undefined){
+        debugLog('<li class="error">' + "Error: not bound, yet" + '</li>');
+        return false;
+    }
     var PositionOptions = {};
     PositionOptions.enableHighAccuracy = true;
     PositionOptions.maximumAge = 5000;
@@ -134,11 +142,8 @@ function findZone(){
         drawEmptyMap(4);
         webinos.discovery.findServices(new ServiceType('http://www.w3.org/ns/api-perms/geolocation'), {
             onFound: function(service){
-                for(var i=0;i<webinos.session.getConnectedDevices().length;i++){
-                    if(webinos.session.getConnectedDevices()[i].id === $('#pzhList')[0].selectedOptions[0].label)
-                        if (webinos.session.getConnectedDevices()[i].pzp.lastIndexOf(service.serviceAddress) !==-1 )
-                            findPositionOf(service);
-                }
+                if(service.serviceAddress.lastIndexOf($('#pzhList')[0].selectedOptions[0].id)!=-1)
+                    findPositionOf(service);
             }
         });
     }
@@ -199,6 +204,7 @@ function findMyLocation(){
     });
 }
 
+
 function resizeDebug() {
 	if(window.innerWidth > 960) {
 		App.debugEl[0].style.maxHeight = window.innerHeight - parseInt(App.body.css('padding-bottom'),10) - App.debugEl[0].offsetTop + 'px';
@@ -214,10 +220,11 @@ function debugLog(msg) {
 	App.debugEl.scrollTop(App.debugEl[0].scrollHeight); //scroll to bottom
 }
 
+
 var App = {};
 $(document).ready(function(){
     $("#btnFindSingleLocation").click(findSingleLocation);
-    $("#btnFindGeolocation").click(findPZHs).click(findGeolocation);
+    $("#btnFindGeolocation").click(findPZHs);
     $("#btnFindAll").click(findAllLocations);
     $("#btnFindMyLocation").click(findMyLocation);
     $("#btnFindZone").click(findZone);
@@ -228,6 +235,47 @@ $(document).ready(function(){
     App.debugEl = $('#debug');
 	App.body = $(document.body);
 });
+
 $(window).resize(function() {
 	resizeDebug();
 });
+
+function logWebinos(){
+    console.log("-------------------------------------");
+    console.log('webinos.session.getSessionId()');
+    console.log(webinos.session.getSessionId());
+    console.log("---");
+    console.log('webinos.session.getConnectedPzh()');
+    console.log(webinos.session.getConnectedPzh());
+    console.log("---");
+    console.log('webinos.session.getConnectedPzp()');
+    console.log(webinos.session.getConnectedPzp());
+    console.log("---");
+    console.log('webinos.session.getConnectedDevices()');
+    console.log(webinos.session.getConnectedDevices());
+    console.log("---");
+    console.log('webinos.session.getPZPId()');    
+    console.log(webinos.session.getPZPId());    
+    console.log("---");
+    console.log('webinos.session.getPZHId()');    
+    console.log(webinos.session.getPZHId());    
+    console.log("---");
+    console.log('webinos.session.getFriendlyName()');    
+    console.log(webinos.session.getFriendlyName());
+    console.log("---");
+    console.log('webinos.session.isConnected()');    
+    console.log(webinos.session.isConnected());      
+    console.log("---");
+    console.log('webinos.session.getSessionId()');    
+    console.log(webinos.session.getSessionId());
+    console.log("---");
+    console.log('webinos.session.getWebinosVersion()');    
+    console.log(webinos.session.getWebinosVersion());    
+    console.log("---");
+    console.log('webinos.session.getServiceLocation()');    
+    console.log(webinos.session.getServiceLocation());    
+    console.log("---");
+    console.log('webinos.session');
+    console.log(webinos.session);
+    console.log("-------------------------------------");
+}

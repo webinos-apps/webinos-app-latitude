@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <widget xmlns="http://www.w3.org/ns/widgets" id="http://webinos.org/latitude" version="0.1">
-  <name>Proximity Reminders</name>
+  <name>webinos Latitude</name>
   <description>
     Locate Personal Zone Proxies inter and intra Personal Zones.
   </description>
