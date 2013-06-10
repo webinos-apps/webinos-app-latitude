@@ -32,11 +32,11 @@
 		<div class="friends">
 			<div>
 				<h2>connected friends :</h2>
-				<select id="pzhList" size="3" style="width:100%;" onchange="findGeolocation();"> <option> </option> </select><br>
+				<select id="pzhList" size="3" style="width:100%;" onchange="findGeolocationServices();"> <option> </option> </select><br>
 			</div>
 			<div>
 				<h2>friend's devices :</h2>
-				<select id="pzpList" size="3" style="width:100%;" onchange="bindservice();"> <option> </option> </select><br>
+				<select id="pzpList" size="3" style="width:100%;" onchange="bindService();"> <option> </option> </select><br>
 			</div>
 		</div>
 
@@ -48,10 +48,8 @@
 			<button id="btnFindMyLocation" >Find my location</button>
 		</div>
 
-		<h2 id="debug-title">Debug info:</h2>
-		<div id="debug">
-
-		</div>
+		<h2 id="debug-title">Console information:</h2>
+		<div id="debug"></div>
 	</div>
 
 	<div id="map"></div>
